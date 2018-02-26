@@ -10,7 +10,7 @@ slack_client = SlackClient(SLACK_BOT_TOKEN)
 
 
 if __name__ == "__main__":
-    api_call = slack_client.api_call("users.getPresence", user='')
+    api_call = slack_client.api_call("users.getPresence", user='U85DMPMUG')
     print(api_call.get('presence'))
 
 """

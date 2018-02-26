@@ -53,7 +53,7 @@ def random_message_sender():
         #delay = int(random.random() * 10 * 6)
         delay = int(random.random() * 10 * 6 * RANDOM_MESSAGE_DELAY_MINUTES)
         try:
-            send_mension_message("send_mension_message", CHANNEL_GERAL)
+            send_message("send_mension_message", CHANNEL_GERAL)
             loop_error = 0
         except Exception as e:
             print("Deu Erro na mensagem aleatoria. Reiniciando. %s" % str(e))
@@ -70,7 +70,7 @@ def mensagem_almoco():
     while True:
         try:
             now = datetime.datetime.now()
-            print("Hora atual: %s" % (now.hour))
+            print("Hora atual: %s:%s" % (now.hour, now.minute))
             if now.hour == 13 and now.minute == 0:
                 slack_client.api_call("chat.postMessage", channel=CHANNEL_GERAL, text="<!everyone> | partiu almoco! |", as_user=True)
                 print("@everyone | partiu almoco! |")
@@ -104,7 +104,7 @@ def send_random_message_to_random_user():
                 api_call = slack_client.api_call("users.getPresence", user=user["id"]) #U85DMPMUG eu
                 if api_call.get('ok') and api_call.get('presence') == 'active':
                     retryes = 0
-                    send_mension_message("random", user["id"])
+                    send_message("random", user["id"])
                     delay = int(random.random() * UM_MINUTO_EM_SEGUNDOS * (RANDOM_MESSAGE_DELAY_MINUTES / 2))
                     print("Enviada mensagem para: %s. Proxima mensagem em %s"%(user["user"], str(delay)))
                     time.sleep(delay)#por o delay
@@ -123,6 +123,12 @@ def send_random_message_to_random_user():
             time.sleep(RETRY_DELAY)
             loop_error = loop_error +1
 
+
+def send_message(command, channel):
+    #if (command == 'random')
+    response = random.choice(constants.BOT_MESSAGES)
+    print("Mensagem: %s  || no canal: %s\n"%(response, str(channel)))
+    slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
 
 def send_mension_message(command, channel):
 	if math_eval.has_expression(command):
