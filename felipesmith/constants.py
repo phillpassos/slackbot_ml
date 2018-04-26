@@ -26,7 +26,7 @@ BOT_MESSAGES_RESPONSE = [
 'valeu',
 'nada a ver',
 'seu cu',
-'_|_',
+':middle_finger::skin-tone-4:',
 ':middle_finger::skin-tone-4:'
 '¬¬',
 ':´(',

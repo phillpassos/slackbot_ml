@@ -1,0 +1,8 @@
+
+BOT_NAME = ''
+BOT_ID = ''
+SLACK_BOT_TOKEN = ''
+CHANNEL_GERAL = ''
+CHANNEL_FRONTEND = ''
+ID_PH = ''
+CHANNEL_BOT = ''

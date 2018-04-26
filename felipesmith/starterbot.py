@@ -34,7 +34,9 @@ def msg_responder():
     loop_error = 0
     while True:
         try:
-            command, channel = parse_slack_output(slack_client.rtm_read())
+            rtm_message = slack_client.rtm_read()
+            print(rtm_message)
+            command, channel = parse_slack_output(rtm_message)
             if command and channel:
                 send_mension_message(command, channel)
             time.sleep(READ_WEBSOCKET_DELAY)
@@ -139,9 +141,11 @@ def send_mension_message(command, channel):
 	else:
 		response = random.choice(constants.BOT_MESSAGES_RESPONSE)
 		
-	if len(response) > 0:
-		print("Resposta: %s  || no canal: %s\n"%(response, str(channel)))
-		slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
+	if not len(response) > 0: #@todo ajustar isso aqui
+		response = random.choice(constants.BOT_MESSAGES_RESPONSE)
+		
+	print("Resposta: %s  || no canal: %s\n"%(response, str(channel)))
+	slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
@@ -152,6 +156,11 @@ def parse_slack_output(slack_rtm_output):
             if output and 'text' in output and AT_BOT in output['text']:
                 return output['text'].split(AT_BOT)[1].strip().lower(), \
                        output['channel']
+			
+            if output and 'text' in output and 'felipe' in output['text'].lower():
+                return output['text'].lower(), \
+                       output['channel']
+			
     return None, None
 
 def get_users():
